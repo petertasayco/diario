@@ -162,7 +162,7 @@
     <div class="decoration" style="top: 75%; right: 5%; animation-delay: 2s;">🌷</div>
 
     <div class="nav-bar">
-        <a href="home.html" class="back-btn">← Volver</a>
+        <a href="index.html" class="back-btn">← Volver</a>
         <button class="save-btn" id="btnGuardar" onclick="guardarHistoria()">Guardar en el alma</button>
     </div>
 
@@ -204,7 +204,7 @@
                 historias.unshift({ id: Date.now(), titulo, cuerpo, fecha: new Date().toLocaleDateString('es-ES', {day:'numeric', month:'long'}) });
             }
             localStorage.setItem('misHistorias', JSON.stringify(historias));
-            window.location.href = 'home.html';
+            window.location.href = 'index.html';
         }
     </script>
 </body>

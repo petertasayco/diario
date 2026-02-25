@@ -180,7 +180,7 @@
     <div class="decoration" style="bottom: 15%; left: 5%; animation-delay: 2s;">✨</div>
 
     <div class="top-nav">
-        <a href="home.html" class="btn-link">← Volver al Baúl</a>
+        <a href="index.html" class="btn-link">← Volver al Baúl</a>
     </div>
 
     <article class="paper-sheet">
@@ -210,7 +210,7 @@
 
         window.onload = function() {
             if (!storyId) {
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
                 return;
             }
 
@@ -223,7 +223,7 @@
                 document.getElementById('cuerpo').innerText = historiaEncontrada.cuerpo;
             } else {
                 alert("No encontramos ese recuerdo ✨");
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
             }
         };
 
@@ -236,7 +236,7 @@
                 const historias = JSON.parse(localStorage.getItem('misHistorias')) || [];
                 const nuevaLista = historias.filter(h => h.id != storyId);
                 localStorage.setItem('misHistorias', JSON.stringify(nuevaLista));
-                window.location.href = 'home.html';
+                window.location.href = 'index.html';
             }
         }
 
