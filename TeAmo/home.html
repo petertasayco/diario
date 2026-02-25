@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Historias ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-soft: #fff5f7;
+            --pink-medium: #fce4ec;
+            --pink-accent: #f06292;
+            --pink-dark: #d81b60;
+            --purple-accent: #8e24aa;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5f7 0%, #fce4ec 100%);
+            background-attachment: fixed;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            color: #4a4a4a;
+            padding-bottom: 100px;
+        }
+
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink-accent);
+            margin: 0;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        /* Contenedor de botones de administración */
+        .admin-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 2rem 0;
+        }
+
+        .btn-admin {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .btn-export { background-color: var(--pink-accent); color: white; }
+        .btn-import { background-color: var(--purple-accent); color: white; }
+
+        .btn-admin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            filter: brightness(1.1);
+        }
+
+        /* Feed de Historias */
+        .feed-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .story-card {
+            background: var(--glass);
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(240, 98, 146, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeIn 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 6px; height: 100%;
+            background: var(--pink-accent);
+        }
+
+        .story-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(240, 98, 146, 0.2);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .date {
+            font-size: 0.75rem;
+            color: var(--pink-accent);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .title {
+            font-size: 1.6rem;
+            color: var(--pink-dark);
+            margin: 0.8rem 0;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+        }
+
+        .preview {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Botón Flotante */
+        .fab {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(45deg, var(--pink-accent), var(--pink-dark));
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(216, 27, 96, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 12px 30px rgba(216, 27, 96, 0.6);
+        }
+
+        /* Mensaje de vacío */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: #adadad;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mis Historias ✨</h1>
+        <p>Momentos guardados en el corazón</p>
+    </header>
+
+    <div class="admin-controls">
+        <button class="btn-admin btn-export" onclick="exportarHistorias()">
+            <span>Descargar Diario</span> 📂
+        </button>
+        
+        <input type="file" id="importFile" style="display:none" onchange="importarDiario(event)">
+        
+        <button class="btn-admin btn-import" onclick="document.getElementById('importFile').click()">
+            <span>Cargar Diario</span> 📥
+        </button>
+    </div>
+
+    <div class="feed-container" id="feed">
+        </div>
+
+    <a href="write.html" class="fab">+</a>
+    <script>
+        window.onload = function() {
+            const feed = document.getElementById('feed');
+            const historias = JSON.parse(localStorage.getItem('misHistorias')) || [];
+
+            if (historias.length === 0) {
+                feed.innerHTML = "<p style='text-align:center; color:#adadad; margin-top:50px;'>Aún no hay historias... <br> Haz clic en el + para empezar a escribir.</p>";
+                return;
+            }
+
+            feed.innerHTML = "";
+            historias.forEach(historia => {
+                const card = document.createElement('div');
+                card.className = 'story-card';
+                card.onclick = () => window.location.href = `read.html?id=${historia.id}`;
+                
+                card.innerHTML = `
+                    <div class="date">${historia.fecha}</div>
+                    <div class="title">${historia.titulo}</div>
+                    <div class="preview">${historia.cuerpo.substring(0, 100)}...</div>
+                `;
+                feed.appendChild(card);
+            });
+        };
+
+        function exportarHistorias() {
+    const historias = localStorage.getItem('misHistorias');
+    if (!historias) {
+        alert("No hay historias para exportar.");
+        return;
+    }
+
+    // Creamos un archivo de texto con los datos
+    const blob = new Blob([historias], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    // Creamos un link invisible para descargar el archivo
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mi_diario_respaldo.json';
+    a.click();
+    
+    URL.revokeObjectURL(url);
+}
+
+function importarDiario(event) {
+    const archivo = event.target.files[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = function(e) {
+        try {
+            const contenido = JSON.parse(e.target.result);
+            let historiasActuales = JSON.parse(localStorage.getItem('misHistorias')) || [];
+
+            // Comprobamos si es una sola historia o una lista
+            if (Array.isArray(contenido)) {
+                // Si es una lista, las combinamos evitando duplicados por ID
+                const idsExistentes = new Set(historiasActuales.map(h => h.id));
+                const nuevas = contenido.filter(h => !idsExistentes.has(h.id));
+                historiasActuales = [...nuevas, ...historiasActuales];
+            } else {
+                // Si es una sola historia, revisamos si ya existe
+                const existe = historiasActuales.some(h => h.id === contenido.id);
+                if (existe) {
+                    alert("Esta historia ya existe en tu baúl ✨");
+                    return;
+                }
+                // La agregamos al principio
+                historiasActuales.unshift(contenido);
+            }
+
+            localStorage.setItem('misHistorias', JSON.stringify(historiasActuales));
+            alert("¡Historia agregada con éxito! ❤️");
+            location.reload(); 
+
+        } catch (err) {
+            alert("El archivo no es válido.");
+            console.error(err);
+        }
+    };
+    lector.readAsText(archivo);
+}
+    </script>
+
+</body>
+</html>
